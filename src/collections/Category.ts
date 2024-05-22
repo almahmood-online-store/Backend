@@ -1,19 +1,16 @@
 import { CollectionConfig } from "payload/types";
+import { admins } from "../access/admins";
+import { adminsOrLoggedIn } from "../access/adminsOrLoggedIn";
 
 const Category: CollectionConfig = {
 	slug: "category",
 	access: {
 		read: () => true, // Allows public read access
-		create: ({ req: { user } }) => user && user.role === "admin", // Only admin users can create
-		update: ({ req: { user } }) => user && user.role === "admin", // Only admin users can update
-		delete: ({ req: { user } }) => user && user.role === "admin", // Only admin users can delete
+		update: admins,
+		create: admins,
+		delete: admins,
 	},
 	fields: [
-		{
-			name: "_id",
-			type: "text",
-			required: true,
-		},
 		{
 			name: "name",
 			type: "text",
@@ -30,8 +27,9 @@ const Category: CollectionConfig = {
 			relationTo: "category",
 		},
 		{
-			name: "image",
-			type: "text",
+			name: "media",
+			type: "upload",
+			relationTo: "media",
 		},
 		{
 			name: "colors",
